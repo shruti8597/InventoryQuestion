@@ -21,22 +21,36 @@ function calculateSellingPrice(country, otherCountry, transport, discount, quant
         let turningPoint = Math.ceil(discountedTransport / (country.price - otherCountry.price))
         if (turningPoint > 10) {
             //Never cheaper bring from own country
-            let sold = 0;
-            if (quantityCountry <= quantity) {
-                //serve 10 multiples from own country
-                sold = Math.floor(quantityCountry / 10);
-                sellingPrice += sold * country.price;
-                quantityCountry -= sold;
-                //serve left from other country
-                let leftOtherCountry = quantity - sold;
-                sold += leftOtherCountry;
-                let serveFromOtherCountry = quantityOtherCountry <= leftOtherCountry ? quantityOtherCountry : leftOtherCountry;
-                sellingPrice += serveFromOtherCountry * otherCountry.price + Math.ceil(serveFromOtherCountry / 10) * discountedTransport;
-                quantityOtherCountry -= serveFromOtherCountry;
-                // if all not available in other country serve leftover from own country
-                sellingPrice += (quantity - sold) * country.price;
-                quantityCountry -= (quantity - sold);
-                return [sellingPrice, quantityCountry, quantityOtherCountry];
+            if (quantityCountry < quantity) {
+                let willGiveFromCountry = Math.floor(quantityCountry / 10) * 10;
+                let balance = quantity - willGiveFromCountry;
+
+                let giveFromOtherCountry = Math.floor(balance / 10) * 10;
+                sellingPrice += Math.floor(balance / 10) * discountedTransport + giveFromOtherCountry * otherCountry.price;
+                quantityOtherCountry -= giveFromOtherCountry;
+                balance = quantity - giveFromOtherCountry;
+
+                if (balance + willGiveFromCountry <= quantityCountry) {
+                    sellingPrice += (balance + willGiveFromCountry) * country.price;
+                    quantityCountry -= (balance + willGiveFromCountry);
+                    return [sellingPrice, quantityCountry, quantityOtherCountry]
+                }
+                else {
+                    if (willGiveFromCountry >= 10) {
+                        let serveFromOtherOne = quantityOtherCountry >= 10 ? 10 : quantityOtherCountry
+                        sellingPrice += serveFromOtherOne * otherCountry.price + discountedTransport;
+                        quantityOtherCountry -= serveFromOtherOne;
+                        let remaining = quantity - (giveFromOtherCountry + serveFromOtherOne);
+                        sellingPrice += remaining * country.price;
+                        quantityCountry -= remaining;
+                        return [sellingPrice, quantityCountry, quantityOtherCountry]
+                    }
+                    else {
+                        sellingPrice += balance * otherCountry.price + discountedTransport;
+                        quantityOtherCountry -= balance;
+                        return [sellingPrice, quantityCountry, quantityOtherCountry]
+                    }
+                }
             }
             else {
                 sellingPrice += quantity * country.price;
@@ -174,7 +188,7 @@ function main() {
             germany: { price: 100, quantity: 100 }
         }
     ];
-    let input = 'Germany:B123AB1234567:Gloves:22:Mask:10';
+    let input = 'UK::Gloves:250:Mask: 150';
     let transport = 400;
     let discount = 20;
     console.log(implementation(input, items, transport, discount))
