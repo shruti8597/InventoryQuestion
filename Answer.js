@@ -65,8 +65,8 @@ function calculateSellingPrice(country, otherCountry, transport, discount, quant
                     else if (quantityOtherCountry >= turningPoint || remained > quantityCountry) {
                         //quantity is less thsn required but greater than turning point bring all valble from other cpuntry
                         sellingPrice += discountedTransport + quantityOtherCountry * otherCountry.price;
-                        quantityOtherCountry = 0;
                         remained -= quantityOtherCountry;
+                        quantityOtherCountry = 0;
                         sellingPrice += country.price * remained;
                         quantityCountry -= remained
                         return [sellingPrice, quantityCountry, quantityOtherCountry]
@@ -89,8 +89,8 @@ function calculateSellingPrice(country, otherCountry, transport, discount, quant
                 //Other country ran out of stock
                 if (remained >= turningPoint || remained > quantityCountry) {
                     sellingPrice += discountedTransport + quantityOtherCountry * otherCountry.price;
-                    quantityOtherCountry = 0;
                     remained -= quantityOtherCountry;
+                    quantityOtherCountry = 0;
                     sellingPrice += country.price * remained;
                     quantityCountry -= remained
                     return [sellingPrice, quantityCountry, quantityOtherCountry]
