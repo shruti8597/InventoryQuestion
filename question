@@ -1,0 +1,34 @@
+Here is the Test, which needs to be coded as a nodeJS command line program. Your submission should strictly be via Github.
+
+Inventory Management Recently a new online store opened on the Internet that sells Masks & Gloves.
+
+
+They are faced with an interesting problem of managing their inventory distributed across 2 countries: UK and Germany.
+You have been assigned to write a program to minimize the sale price for online customers based on its inventory in these 2 countries. The prices are different based on the country where the inventory is stored. The inventory in the two countries is limited. There are 100 Masks in UK which have a sale price of £65 whereas there are 100 in Germany
+which have a sale price of £100. There are 100 Gloves in UK which have a sale price of £100 whereas there are 50 in Germany which have a sale price of £150. For simplicity we will use GBP as our transaction currency. The order should be fulfilled fully or not at all. If the inventory from one country in used up item have to be fetched from
+the other country. There is a transport cost involved when the item needs to be shipped from one country to another in case the purchase country is different than the inventory country. Shipping cost is £400 for every 10 units of item type (no mixing of item types). Note that transport cost is always in multiples of 10 units. If customer passport belongs to local country then the customer will get 20% discount on the transport cost. 
+
+For example, a customer placing order from Germany and has a passport of UK, while shipping order from UK the transport cost will be charged
+(£400 - 20% = £320) for every 10 units. To identify passport from UK, passport number starts with B, followed by 3 digits, followed 2 chars, followed by 7 alphanumeric characters. And for Germany, passport number starts with A, followed by 2 chars, followed by 9 alphanumeric characters. To minimize the total sales price, it can be partly
+fulfilled from one country and remaining from other. Assume that before each purchase order the inventory is replenished to its normal level. Thus, the orders are independent of each other.
+
+Use following input/output to understand the problem better. Also, if you find any discrepancies in the problem or sample input/output please let us know.
+
+
+INPUT FORMAT: (no space between separators) <purchase_country>:<optional_passport_number>:<item_type>:<number_of_units_to_be_ordered>:<item_type>:<number_of_units_to_be_ordered>
+
+
+OUTPUT FORMAT: <total_sale_price>:<Mask_UK_inventory>:<Mask_Germany_inventory> :<Gloves_UK_inventory>:<Gloves_Germany_inventory>
+Example input & output
+INPUT 1: UK:B123AB1234567:Gloves:20:Mask:10
+OUTPUT 1: 2650:90:100 80:50
+INPUT 2: Germany:B123AB1234567:Gloves:22:Mask:10
+OUTPUT 2: 3910:90:100 80:48
+INPUT 3: UK:AAB123456789:Gloves:125:Mask:70
+OUTPUT 3: 19260:30:100 0:25
+INPUT 4: Germany:AAB123456789:Mask:50:Gloves:25
+OUTPUT 4: 8550:100 50:80:45
+INPUT 5: UK:Gloves:50:Mask:150
+OUTPUT 5: 18500:0:50:50:50
+INPUT 6: UK:Gloves:250:Mask: 150 
+OUTPUT 6: OUT_OF_STOCK:100 100:100 50
