@@ -125,6 +125,8 @@ function implementation(input, items, transport, discount) {
     let split = input.split(":")
     if (split.length < 2)
         return 'Invalid input';
+    if (split.length % 2 != 0)
+        split.splice(1, 0, 'Invalid');
     if (split.length == 2)
         return items.reduce((acc, _) => {
             return acc + ':' + (_.uk.quantity + ':' + _.germany.quantity)
@@ -175,7 +177,7 @@ function implementation(input, items, transport, discount) {
     }, sellingPrice.toString());
 }
 
-function main() {
+function main(input) {
     let items = [
         {
             label: 'Gloves',
@@ -188,10 +190,10 @@ function main() {
             germany: { price: 100, quantity: 100 }
         }
     ];
-    let input = 'UK::Gloves:250:Mask: 150';
+    //let input = 'UK::Gloves:250:Mask: 150';
     let transport = 400;
     let discount = 20;
     console.log(implementation(input, items, transport, discount))
 }
 
-main();
+main(process.argv[2]);
